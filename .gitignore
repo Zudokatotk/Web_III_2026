@@ -1,0 +1,12 @@
+## Visual Studio / .NET Core gitignore
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+*.db-shm
+*.db-wal
+appsettings.Development.json
