@@ -1,0 +1,69 @@
+@model Segundo_Momento_Evaluativo.Models.Curso
+
+@{
+    ViewData["Title"] = "Detalles del Curso";
+}
+
+<h1>Detalles del Curso</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Titulo)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Titulo)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nivel)</dt>
+        <dd class="col-sm-9"><span class="badge bg-secondary">@Html.DisplayFor(model => model.Nivel)</span></dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DuracionMinutos)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.DuracionMinutos) minutos</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EstaPublicado)</dt>
+        <dd class="col-sm-9">@(Model.EstaPublicado ? "Publicado" : "Borrador")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FechaCreacion)</dt>
+        <dd class="col-sm-9">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+</div>
+
+<h4 class="mt-4">Lecciones de este Curso</h4>
+<p>
+    <a asp-controller="Lecciones" asp-action="Create" asp-route-cursoId="@Model.Id" class="btn btn-sm btn-success">Agregar Lección</a>
+</p>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 80px;">Orden</th>
+            <th>Título de la Lección</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Lecciones.Any())
+        {
+            <tr>
+                <td colspan="3" class="text-center text-muted">No hay lecciones registradas para este curso.</td>
+            </tr>
+        }
+        @foreach (var leccion in Model.Lecciones.OrderBy(l => l.Orden))
+        {
+            <tr>
+                <td>#@leccion.Orden</td>
+                <td>@leccion.Titulo</td>
+                <td>
+                    <a asp-controller="Lecciones" asp-action="Details" asp-route-id="@leccion.Id" class="btn btn-sm btn-outline-info">Ver Contenido</a> |
+                    <a asp-controller="Lecciones" asp-action="Edit" asp-route-id="@leccion.Id" class="btn btn-sm btn-outline-secondary">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Curso</a> |
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+</div>

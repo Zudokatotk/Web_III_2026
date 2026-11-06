@@ -1,0 +1,71 @@
+@model IEnumerable<Segundo_Momento_Evaluativo.Models.Curso>
+
+@{
+    ViewData["Title"] = "Cursos";
+    string currentSearch = ViewData["CurrentSearch"] as string ?? "";
+    string currentNivel = ViewData["CurrentNivel"] as string ?? "Todos";
+}
+
+<h1>Catálogo de Cursos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Curso</a>
+</p>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <input type="text" name="search" value="@currentSearch" class="form-control" placeholder="Buscar por título o descripción..." />
+    </div>
+    <div class="col-md-3">
+        <select name="nivel" class="form-select">
+            <option value="Todos" selected="@(currentNivel == "Todos")">Todos los Niveles</option>
+            <option value="Principiante" selected="@(currentNivel == "Principiante")">Principiante</option>
+            <option value="Intermedio" selected="@(currentNivel == "Intermedio")">Intermedio</option>
+            <option value="Avanzado" selected="@(currentNivel == "Avanzado")">Avanzado</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">Filtrar</button>
+    </div>
+</form>
+
+<table class="table table-striped table-hover align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Titulo)</th>
+            <th>@Html.DisplayNameFor(model => model.Nivel)</th>
+            <th>@Html.DisplayNameFor(model => model.DuracionMinutos)</th>
+            <th>@Html.DisplayNameFor(model => model.EstaPublicado)</th>
+            <th>Lecciones</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <strong>@Html.DisplayFor(modelItem => item.Titulo)</strong>
+            </td>
+            <td>
+                <span class="badge bg-secondary">@Html.DisplayFor(modelItem => item.Nivel)</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DuracionMinutos) min
+            </td>
+            <td>
+                @(item.EstaPublicado ? "Sí" : "No")
+            </td>
+            <td>
+                <a asp-controller="Lecciones" asp-action="Index" asp-route-cursoId="@item.Id">
+                    Ver Lecciones (@(item.Lecciones?.Count ?? 0))
+                </a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
