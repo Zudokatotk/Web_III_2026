@@ -1,0 +1,28 @@
+@model Segundo_Momento_Evaluativo.Models.Leccion
+
+@{
+    ViewData["Title"] = "Eliminar Lección";
+}
+
+<h1>Eliminar Lección</h1>
+
+<h3>¿Está seguro de que desea eliminar esta lección?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Curso</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Curso.Titulo)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Orden)</dt>
+        <dd class="col-sm-9">#@Html.DisplayFor(model => model.Orden)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Titulo)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Titulo)</dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-cursoId="@Model.CursoId" class="btn btn-secondary">Volver a la lista</a>
+    </form>
+</div>

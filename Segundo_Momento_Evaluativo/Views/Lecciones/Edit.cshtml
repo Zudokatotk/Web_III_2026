@@ -1,0 +1,45 @@
+@model Segundo_Momento_Evaluativo.Models.Leccion
+
+@{
+    ViewData["Title"] = "Editar Lección";
+}
+
+<h1>Editar Lección</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FechaCreacion" />
+            <div class="mb-3">
+                <label asp-for="CursoId" class="control-label"></label>
+                <select asp-for="CursoId" class="form-select" asp-items="ViewBag.CursoId"></select>
+                <span asp-validation-for="CursoId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Orden" class="control-label"></label>
+                <input asp-for="Orden" class="form-control" type="number" min="1" />
+                <span asp-validation-for="Orden" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Contenido" class="control-label"></label>
+                <textarea asp-for="Contenido" class="form-control" rows="8"></textarea>
+                <span asp-validation-for="Contenido" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
