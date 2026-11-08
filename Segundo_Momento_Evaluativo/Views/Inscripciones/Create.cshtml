@@ -1,0 +1,37 @@
+@model Segundo_Momento_Evaluativo.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Nueva Inscripción";
+}
+
+<h1>Nueva Inscripción a Curso</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="CursoId" class="control-label"></label>
+                <select asp-for="CursoId" class="form-select" asp-items="ViewBag.CursoId"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="NombreEstudiante" class="control-label"></label>
+                <input asp-for="NombreEstudiante" class="form-control" placeholder="Juan Pérez" />
+                <span asp-validation-for="NombreEstudiante" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CorreoEstudiante" class="control-label"></label>
+                <input asp-for="CorreoEstudiante" class="form-control" placeholder="juan@univalle.edu" />
+                <span asp-validation-for="CorreoEstudiante" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Inscribir" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

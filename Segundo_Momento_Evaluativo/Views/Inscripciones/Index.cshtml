@@ -1,0 +1,49 @@
+@model IEnumerable<Segundo_Momento_Evaluativo.Models.Inscripcion>
+
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<h1>Inscripciones a Cursos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nueva Inscripción</a>
+</p>
+
+<table class="table table-striped table-hover align-middle">
+    <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Estudiante</th>
+            <th>Correo</th>
+            <th>Fecha Inscripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (!Model.Any()) {
+        <tr>
+            <td colspan="5" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
+        </tr>
+}
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <strong>@Html.DisplayFor(modelItem => item.Curso.Titulo)</strong>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEstudiante)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorreoEstudiante)
+            </td>
+            <td>
+                @item.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Anular Inscripción</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

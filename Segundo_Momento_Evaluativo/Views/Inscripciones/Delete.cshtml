@@ -1,0 +1,31 @@
+@model Segundo_Momento_Evaluativo.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Anular Inscripción";
+}
+
+<h1>Anular Inscripción</h1>
+
+<h3>¿Está seguro de que desea anular la inscripción de este estudiante?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Curso</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Curso.Titulo)</dd>
+
+        <dt class="col-sm-3">Estudiante</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.NombreEstudiante)</dd>
+
+        <dt class="col-sm-3">Correo</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CorreoEstudiante)</dd>
+
+        <dt class="col-sm-3">Fecha de Inscripción</dt>
+        <dd class="col-sm-9">@Model.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Confirmar Anulación" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+    </form>
+</div>
