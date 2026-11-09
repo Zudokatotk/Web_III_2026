@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4 fw-bold">Portal de Microcursos y Tutoriales</h1>
+    <p class="lead text-muted">Plataforma académica para la gestión y aprendizaje de cursos técnicos - Universidad del Valle</p>
+    <hr class="my-4" />
+    <div class="d-flex justify-content-center gap-3">
+        <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary btn-lg">Ver Catálogo de Cursos</a>
+        <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-outline-secondary btn-lg">Gestión de Inscripciones</a>
+    </div>
+</div>
