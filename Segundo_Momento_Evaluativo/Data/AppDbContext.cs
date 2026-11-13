@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Segundo_Momento_Evaluativo.Models;
 
 namespace Segundo_Momento_Evaluativo.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -17,6 +19,7 @@ namespace Segundo_Momento_Evaluativo.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Crucial: base.OnModelCreating configura las tablas de Identity (AspNetUsers, AspNetRoles, etc.)
             base.OnModelCreating(modelBuilder);
 
             // Relación Curso -> Lecciones (Eliminación en cascada)
@@ -32,6 +35,13 @@ namespace Segundo_Momento_Evaluativo.Data
                 .WithMany(c => c.Inscripciones)
                 .HasForeignKey(i => i.CursoId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación Usuario (Identity) -> Inscripciones
+            modelBuilder.Entity<Inscripcion>()
+                .HasOne(i => i.Usuario)
+                .WithMany()
+                .HasForeignKey(i => i.UsuarioId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Restricción única: no duplicar inscripción por correo y curso
             modelBuilder.Entity<Inscripcion>()

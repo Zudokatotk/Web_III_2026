@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Segundo_Momento_Evaluativo.Models
 {
@@ -10,6 +11,11 @@ namespace Segundo_Momento_Evaluativo.Models
         [Display(Name = "Curso")]
         public int CursoId { get; set; }
         public virtual Curso? Curso { get; set; }
+
+        // Vínculo con Identity (Paso 6 y 7 de la pizarra)
+        [Display(Name = "Usuario")]
+        public string? UsuarioId { get; set; }
+        public virtual IdentityUser? Usuario { get; set; }
 
         [Required(ErrorMessage = "El nombre del estudiante es obligatorio.")]
         [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres.")]
