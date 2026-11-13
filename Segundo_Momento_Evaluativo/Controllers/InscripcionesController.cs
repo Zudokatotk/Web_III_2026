@@ -18,14 +18,18 @@ namespace Segundo_Momento_Evaluativo.Controllers
         // GET: Inscripciones
         public async Task<IActionResult> Index()
         {
-            var inscripciones = _context.Inscripciones.Include(i => i.Curso);
-            return View(await inscripciones.OrderByDescending(i => i.FechaInscripcion).ToListAsync());
+            var inscripciones = await _context.Inscripciones
+                .Include(i => i.Curso)
+                .OrderByDescending(i => i.FechaInscripcion)
+                .ToListAsync();
+
+            return View(inscripciones);
         }
 
         // GET: Inscripciones/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos.Where(c => c.EstaPublicado), "Id", "Titulo");
+            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Titulo");
             return View();
         }
 

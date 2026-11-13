@@ -1,13 +1,53 @@
-﻿@{
+@{
     ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center py-5">
-    <h1 class="display-4 fw-bold">Portal de Microcursos y Tutoriales</h1>
-    <p class="lead text-muted">Plataforma académica para la gestión y aprendizaje de cursos técnicos - Universidad del Valle</p>
-    <hr class="my-4" />
-    <div class="d-flex justify-content-center gap-3">
-        <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary btn-lg">Ver Catálogo de Cursos</a>
-        <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-outline-secondary btn-lg">Gestión de Inscripciones</a>
+<div class="p-4 p-md-5 mb-4 bg-white rounded-3 shadow-sm border text-center">
+    <h1 class="display-6 fw-bold text-dark">Portal de Microcursos y Tutoriales</h1>
+    <p class="lead text-muted col-md-9 mx-auto mt-2">
+        Plataforma académica para la gestión de microcursos técnicos, temarios por lecciones e inscripciones de estudiantes.
+    </p>
+    <div class="d-flex justify-content-center gap-2 mt-3">
+        <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary px-4">Ver Catálogo de Cursos</a>
+        <a asp-controller="Inscripciones" asp-action="Create" class="btn btn-outline-secondary px-4">Inscribir Estudiante</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4 text-center">
+                <div class="fs-1 text-primary mb-2"></div>
+                <h5 class="card-title fw-bold">Módulo de Cursos</h5>
+                <p class="card-text text-muted small">
+                    Administra los cursos formativos, niveles (Principiante, Intermedio, Avanzado), duración y estado de publicación.
+                </p>
+                <a asp-controller="Cursos" asp-action="Index" class="btn btn-sm btn-outline-primary mt-2">Ir a Cursos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4 text-center">
+                <div class="fs-1 text-primary mb-2"></div>
+                <h5 class="card-title fw-bold">Módulo de Lecciones</h5>
+                <p class="card-text text-muted small">
+                    Organiza el temario de cada curso de manera secuencial, con enlaces de contenido y duración estimada.
+                </p>
+                <a asp-controller="Lecciones" asp-action="Index" class="btn btn-sm btn-outline-primary mt-2">Ir a Lecciones</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4 text-center">
+                <div class="fs-1 text-primary mb-2"></div>
+                <h5 class="card-title fw-bold">Módulo de Inscripciones</h5>
+                <p class="card-text text-muted small">
+                    Registra y da de baja la participación de estudiantes en los cursos con fecha y correo institucional.
+                </p>
+                <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-sm btn-outline-primary mt-2">Ir a Inscripciones</a>
+            </div>
+        </div>
     </div>
 </div>

@@ -4,66 +4,106 @@
     ViewData["Title"] = "Detalles del Curso";
 }
 
-<h1>Detalles del Curso</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Titulo)</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.Titulo)</dd>
-
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Descripcion)</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.Descripcion)</dd>
-
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nivel)</dt>
-        <dd class="col-sm-9"><span class="badge bg-secondary">@Html.DisplayFor(model => model.Nivel)</span></dd>
-
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DuracionMinutos)</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.DuracionMinutos) minutos</dd>
-
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EstaPublicado)</dt>
-        <dd class="col-sm-9">@(Model.EstaPublicado ? "Publicado" : "Borrador")</dd>
-
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FechaCreacion)</dt>
-        <dd class="col-sm-9">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
-    </dl>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="h3 fw-bold mb-0">Detalles del Curso</h2>
+        <small class="text-muted">Información descriptiva y temario asociado</small>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Curso</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Volver al Catálogo</a>
+    </div>
 </div>
 
-<h4 class="mt-4">Lecciones de este Curso</h4>
-<p>
-    <a asp-controller="Lecciones" asp-action="Create" asp-route-cursoId="@Model.Id" class="btn btn-sm btn-success">Agregar Lección</a>
-</p>
-
-<table class="table table-bordered table-sm">
-    <thead class="table-light">
-        <tr>
-            <th style="width: 80px;">Orden</th>
-            <th>Título de la Lección</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (!Model.Lecciones.Any())
-        {
-            <tr>
-                <td colspan="3" class="text-center text-muted">No hay lecciones registradas para este curso.</td>
-            </tr>
-        }
-        @foreach (var leccion in Model.Lecciones.OrderBy(l => l.Orden))
-        {
-            <tr>
-                <td>#@leccion.Orden</td>
-                <td>@leccion.Titulo</td>
-                <td>
-                    <a asp-controller="Lecciones" asp-action="Details" asp-route-id="@leccion.Id" class="btn btn-sm btn-outline-info">Ver Contenido</a> |
-                    <a asp-controller="Lecciones" asp-action="Edit" asp-route-id="@leccion.Id" class="btn btn-sm btn-outline-secondary">Editar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Curso</a> |
-    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <div class="row g-3">
+            <div class="col-md-8">
+                <h4 class="fw-bold text-dark mb-2">@(Model?.Titulo ?? "")</h4>
+                <p class="text-secondary">@(Model?.Descripcion ?? "")</p>
+            </div>
+            <div class="col-md-4 border-start ps-md-4">
+                <div class="mb-2">
+                    <span class="text-muted small d-block">Nivel formativo:</span>
+                    @if (Model?.Nivel == "Principiante")
+                    {
+                        <span class="badge bg-success">Principiante</span>
+                    }
+                    else if (Model?.Nivel == "Intermedio")
+                    {
+                        <span class="badge bg-warning text-dark">Intermedio</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Avanzado</span>
+                    }
+                </div>
+                <div class="mb-2">
+                    <span class="text-muted small d-block">Duración estimada:</span>
+                    <strong>@(Model?.DuracionMinutos ?? 0) minutos</strong>
+                </div>
+                <div class="mb-2">
+                    <span class="text-muted small d-block">Estado:</span>
+                    @if (Model?.EstaPublicado == true)
+                    {
+                        <span class="badge bg-success bg-opacity-75">Publicado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Borrador</span>
+                    }
+                </div>
+                <div>
+                    <span class="text-muted small d-block">Fecha de alta:</span>
+                    <small class="text-muted">@(Model?.FechaCreacion.ToString("dd/MM/yyyy HH:mm") ?? "")</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="fw-bold mb-0">Lecciones del Curso</h5>
+            <small class="text-muted">Temario secuencial asignado</small>
+        </div>
+        <a asp-controller="Lecciones" asp-action="Create" asp-route-cursoId="@Model?.Id" class="btn btn-sm btn-outline-primary">+ Agregar Lección</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 80px;">Orden</th>
+                    <th>Título de la Lección</th>
+                    <th class="text-end pe-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Lecciones == null || !Model.Lecciones.Any())
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">No hay lecciones registradas para este curso.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var leccion in Model.Lecciones.OrderBy(l => l.Orden))
+                    {
+                        <tr>
+                            <td><span class="badge bg-light text-dark border">#@leccion.Orden</span></td>
+                            <td><strong>@leccion.Titulo</strong></td>
+                            <td class="text-end pe-3">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-controller="Lecciones" asp-action="Details" asp-route-id="@leccion.Id" class="btn btn-outline-primary">Ver</a>
+                                    <a asp-controller="Lecciones" asp-action="Edit" asp-route-id="@leccion.Id" class="btn btn-outline-secondary">Editar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

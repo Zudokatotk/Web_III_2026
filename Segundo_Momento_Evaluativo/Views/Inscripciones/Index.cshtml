@@ -4,46 +4,52 @@
     ViewData["Title"] = "Inscripciones";
 }
 
-<h1>Inscripciones a Cursos</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="h3 fw-bold mb-0">Inscripciones a Cursos</h2>
+        <small class="text-muted">Registro y control de estudiantes inscritos en la plataforma</small>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">+ Nueva Inscripción</a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Nueva Inscripción</a>
-</p>
-
-<table class="table table-striped table-hover align-middle">
-    <thead>
-        <tr>
-            <th>Curso</th>
-            <th>Estudiante</th>
-            <th>Correo</th>
-            <th>Fecha Inscripción</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Curso</th>
+                    <th>Estudiante</th>
+                    <th>Correo Electrónico</th>
+                    <th>Fecha de Registro</th>
+                    <th class="text-end pe-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
 @if (!Model.Any()) {
-        <tr>
-            <td colspan="5" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
-        </tr>
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No hay inscripciones registradas actualmente.</td>
+                </tr>
 }
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                <strong>@Html.DisplayFor(modelItem => item.Curso.Titulo)</strong>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreEstudiante)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorreoEstudiante)
-            </td>
-            <td>
-                @item.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Anular Inscripción</a>
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold text-dark">@(item.Curso?.Titulo ?? "Curso no especificado")</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreEstudiante)
+                    </td>
+                    <td>
+                        <span class="text-muted small">@Html.DisplayFor(modelItem => item.CorreoEstudiante)</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-light text-secondary border">@item.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</span>
+                    </td>
+                    <td class="text-end pe-3">
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Anular Inscripción</a>
+                    </td>
+                </tr>
 }
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
