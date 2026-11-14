@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Segundo_Momento_Evaluativo.Data;
@@ -14,7 +15,8 @@ namespace Segundo_Momento_Evaluativo.Controllers
             _context = context;
         }
 
-        // GET: Cursos
+        // GET: Cursos (Catálogo visible para todos)
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string? search, string? nivel)
         {
             var query = _context.Cursos.Include(c => c.Lecciones).AsQueryable();
@@ -57,6 +59,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Cursos/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
@@ -64,6 +67,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Cursos/Create
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Nivel,DuracionMinutos,EstaPublicado")] Curso curso)
         {
@@ -78,6 +82,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Cursos/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +100,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Cursos/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Nivel,DuracionMinutos,EstaPublicado,FechaCreacion")] Curso curso)
         {
@@ -124,6 +130,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Cursos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,6 +150,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Cursos/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

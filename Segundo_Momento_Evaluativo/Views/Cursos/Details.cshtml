@@ -10,7 +10,14 @@
         <small class="text-muted">Información descriptiva y temario asociado</small>
     </div>
     <div class="d-flex gap-2">
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Curso</a>
+        @if (User.IsInRole("Administrador"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Curso</a>
+        }
+        else
+        {
+            <a asp-controller="Inscripciones" asp-action="Create" asp-route-cursoId="@Model?.Id" class="btn btn-success">Inscribirme a este Curso</a>
+        }
         <a asp-action="Index" class="btn btn-outline-secondary">Volver al Catálogo</a>
     </div>
 </div>
@@ -68,7 +75,10 @@
             <h5 class="fw-bold mb-0">Lecciones del Curso</h5>
             <small class="text-muted">Temario secuencial asignado</small>
         </div>
-        <a asp-controller="Lecciones" asp-action="Create" asp-route-cursoId="@Model?.Id" class="btn btn-sm btn-outline-primary">+ Agregar Lección</a>
+        @if (User.IsInRole("Administrador"))
+        {
+            <a asp-controller="Lecciones" asp-action="Create" asp-route-cursoId="@Model?.Id" class="btn btn-sm btn-outline-primary">+ Agregar Lección</a>
+        }
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -96,7 +106,10 @@
                             <td class="text-end pe-3">
                                 <div class="btn-group btn-group-sm">
                                     <a asp-controller="Lecciones" asp-action="Details" asp-route-id="@leccion.Id" class="btn btn-outline-primary">Ver</a>
-                                    <a asp-controller="Lecciones" asp-action="Edit" asp-route-id="@leccion.Id" class="btn btn-outline-secondary">Editar</a>
+                                    @if (User.IsInRole("Administrador"))
+                                    {
+                                        <a asp-controller="Lecciones" asp-action="Edit" asp-route-id="@leccion.Id" class="btn btn-outline-secondary">Editar</a>
+                                    }
                                 </div>
                             </td>
                         </tr>

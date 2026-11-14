@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Segundo_Momento_Evaluativo.Models;
 
 namespace Segundo_Momento_Evaluativo.Controllers
 {
+    [Authorize]
     public class LeccionesController : Controller
     {
         private readonly AppDbContext _context;
@@ -50,6 +52,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Lecciones/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create(int? cursoId)
         {
             ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Titulo", cursoId);
@@ -63,6 +66,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Lecciones/Create
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CursoId,Titulo,Contenido,Orden")] Leccion leccion)
         {
@@ -78,6 +82,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Lecciones/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +101,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Lecciones/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CursoId,Titulo,Contenido,Orden,FechaCreacion")] Leccion leccion)
         {
@@ -126,6 +132,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
         }
 
         // GET: Lecciones/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,6 +153,7 @@ namespace Segundo_Momento_Evaluativo.Controllers
 
         // POST: Lecciones/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
