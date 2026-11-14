@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Segundo_Momento_Evaluativo.Data;
 using Segundo_Momento_Evaluativo.Models;
@@ -22,18 +23,76 @@ else
         options.UseSqlServer(connectionString));
 }
 
-// 2. Servicios MVC
+// 2. Configuración de ASP.NET Core Identity (Paso 6 y 7: Login y Roles)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+// 3. Servicios MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Asegurar creación de base de datos e inicializar datos de prueba
+// Asegurar creación de base de datos e inicializar datos y usuarios de prueba
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
     try
     {
         context.Database.EnsureCreated();
+
+        // Inicializar Roles (Paso 7: Administrador y Estudiante)
+        string[] roles = { "Administrador", "Estudiante" };
+        foreach (var role in roles)
+        {
+            if (!roleManager.RoleExistsAsync(role).GetAwaiter().GetResult())
+            {
+                roleManager.CreateAsync(new IdentityRole(role)).GetAwaiter().GetResult();
+            }
+        }
+
+        // Usuario Administrador por defecto
+        var adminEmail = "admin@univalle.edu";
+        var adminUser = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
+        if (adminUser == null)
+        {
+            adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+            var result = userManager.CreateAsync(adminUser, "Admin123!").GetAwaiter().GetResult();
+            if (result.Succeeded)
+            {
+                userManager.AddToRoleAsync(adminUser, "Administrador").GetAwaiter().GetResult();
+            }
+        }
+
+        // Usuario Estudiante por defecto
+        var studentEmail = "estudiante@univalle.edu";
+        var studentUser = userManager.FindByEmailAsync(studentEmail).GetAwaiter().GetResult();
+        if (studentUser == null)
+        {
+            studentUser = new IdentityUser { UserName = studentEmail, Email = studentEmail, EmailConfirmed = true };
+            var result = userManager.CreateAsync(studentUser, "Estudiante123!").GetAwaiter().GetResult();
+            if (result.Succeeded)
+            {
+                userManager.AddToRoleAsync(studentUser, "Estudiante").GetAwaiter().GetResult();
+            }
+        }
 
         // Datos iniciales de prueba si la base de datos está vacía
         if (!context.Cursos.Any())
@@ -73,8 +132,9 @@ using (var scope = app.Services.CreateScope())
             context.Inscripciones.Add(new Inscripcion
             {
                 CursoId = curso1.Id,
-                NombreEstudiante = "Juan Pérez",
-                CorreoEstudiante = "juan.perez@univalle.edu",
+                UsuarioId = studentUser?.Id,
+                NombreEstudiante = "Estudiante Univalle",
+                CorreoEstudiante = "estudiante@univalle.edu",
                 FechaInscripcion = DateTime.UtcNow
             });
             context.SaveChanges();
@@ -83,11 +143,11 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error al inicializar la base de datos.");
+        logger.LogError(ex, "Error al inicializar la base de datos y roles de Identity.");
     }
 }
 
-// 3. Pipeline HTTP
+// 4. Pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -99,6 +159,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Autenticación antes de Autorización
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
