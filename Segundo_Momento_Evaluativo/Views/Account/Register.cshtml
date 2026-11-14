@@ -1,0 +1,69 @@
+@model Segundo_Momento_Evaluativo.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registro de Usuario";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white py-3 text-center">
+                <h4 class="fw-bold mb-0">Crear Nueva Cuenta</h4>
+                <small class="text-white-50">Acceso a Microcursos y Evaluaciones</small>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Register" asp-route-returnUrl="@returnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NombreCompleto" class="form-label fw-semibold"></label>
+                        <input asp-for="NombreCompleto" class="form-control" placeholder="Ej. Carlos Mendoza" />
+                        <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" placeholder="carlos@univalle.edu" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label fw-semibold"></label>
+                            <input asp-for="Password" class="form-control" placeholder="Mínimo 6 caracteres" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Repite la contraseña" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Rol" class="form-label fw-semibold"></label>
+                        <select asp-for="Rol" class="form-select">
+                            <option value="Estudiante" selected>Estudiante (Inscripción a cursos y acceso a contenidos)</option>
+                            <option value="Administrador">Administrador (Gestión integral de catálogo y lecciones)</option>
+                        </select>
+                        <span asp-validation-for="Rol" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg">Registrar Cuenta</button>
+                    </div>
+
+                    <div class="text-center small text-muted">
+                        ¿Ya tienes una cuenta registrada? 
+                        <a asp-action="Login" asp-route-returnUrl="@returnUrl" class="text-decoration-none fw-semibold">Iniciar Sesión</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

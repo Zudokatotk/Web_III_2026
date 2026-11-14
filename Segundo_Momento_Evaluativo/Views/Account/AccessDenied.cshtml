@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 text-center">
+        <div class="card shadow-sm border-0 p-5">
+            <div class="display-1 text-danger mb-3">⛔</div>
+            <h2 class="fw-bold text-danger">Acceso Restringido</h2>
+            <p class="lead text-secondary mt-2">
+                No tienes los permisos o el rol necesario para acceder a esta sección del sistema.
+            </p>
+            <p class="text-muted small">
+                Esta acción requiere privilegios de <strong>Administrador</strong>.
+            </p>
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary">Volver al Catálogo</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Ir al Inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
