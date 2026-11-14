@@ -1,0 +1,39 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav ms-auto align-items-center">
+@if (SignInManager.IsSignedIn(User))
+{
+    var userEmail = User.Identity?.Name ?? "Usuario";
+    var esAdmin = User.IsInRole("Administrador");
+
+    <li class="nav-item me-2">
+        <span class="nav-link text-white-50 small d-inline-flex align-items-center">
+            <span class="text-white me-2">@userEmail</span>
+            @if (esAdmin)
+            {
+                <span class="badge bg-danger" style="font-size: 0.65rem;">Admin</span>
+            }
+            else
+            {
+                <span class="badge bg-success" style="font-size: 0.65rem;">Estudiante</span>
+            }
+        </span>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+            <button type="submit" class="btn btn-sm btn-outline-light">Cerrar Sesión</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+    </li>
+    <li class="nav-item ms-1">
+        <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Register">Registrarse</a>
+    </li>
+}
+</ul>
