@@ -5,7 +5,6 @@ using Segundo_Momento_Evaluativo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configuración de Base de Datos con Entity Framework Core
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
     ?? "Server=(localdb)\\mssqllocaldb;Database=PortalMicrocursos_UnivalleDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
 
@@ -23,7 +22,6 @@ else
         options.UseSqlServer(connectionString));
 }
 
-// 2. Configuración de ASP.NET Core Identity (Paso 6 y 7: Login y Roles)
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -42,12 +40,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-// 3. Servicios MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Asegurar creación de base de datos e inicializar datos y usuarios de prueba
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -58,7 +54,6 @@ using (var scope = app.Services.CreateScope())
     {
         context.Database.EnsureCreated();
 
-        // Inicializar Roles (Paso 7: Administrador y Estudiante)
         string[] roles = { "Administrador", "Estudiante" };
         foreach (var role in roles)
         {
@@ -68,7 +63,6 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
-        // Usuario Administrador por defecto
         var adminEmail = "admin@univalle.edu";
         var adminUser = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
         if (adminUser == null)
@@ -81,7 +75,6 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
-        // Usuario Estudiante por defecto
         var studentEmail = "estudiante@univalle.edu";
         var studentUser = userManager.FindByEmailAsync(studentEmail).GetAwaiter().GetResult();
         if (studentUser == null)
@@ -94,7 +87,6 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
-        // Datos iniciales de prueba si la base de datos está vacía
         if (!context.Cursos.Any())
         {
             var curso1 = new Curso
@@ -143,11 +135,10 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error al inicializar la base de datos y roles de Identity.");
+        logger.LogError(ex, "Error al inicializar la base de datos.");
     }
 }
 
-// 4. Pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -159,7 +150,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Autenticación antes de Autorización
 app.UseAuthentication();
 app.UseAuthorization();
 

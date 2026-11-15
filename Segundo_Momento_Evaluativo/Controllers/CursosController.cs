@@ -15,7 +15,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             _context = context;
         }
 
-        // GET: Cursos (Catálogo visible para todos)
         [AllowAnonymous]
         public async Task<IActionResult> Index(string? search, string? nivel)
         {

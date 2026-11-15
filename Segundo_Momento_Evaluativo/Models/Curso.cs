@@ -18,7 +18,7 @@ namespace Segundo_Momento_Evaluativo.Models
 
         [Required(ErrorMessage = "El nivel es obligatorio.")]
         [Display(Name = "Nivel")]
-        public string Nivel { get; set; } = "Principiante"; // Principiante, Intermedio, Avanzado
+        public string Nivel { get; set; } = "Principiante";
 
         [Required(ErrorMessage = "La duración es obligatoria.")]
         [Range(1, 10000, ErrorMessage = "La duración debe ser mayor a 0 minutos.")]
@@ -31,7 +31,6 @@ namespace Segundo_Momento_Evaluativo.Models
         [Display(Name = "Fecha de Creación")]
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
-        // Propiedades de navegación
         public virtual ICollection<Leccion> Lecciones { get; set; } = new List<Leccion>();
         public virtual ICollection<Inscripcion> Inscripciones { get; set; } = new List<Inscripcion>();
     }

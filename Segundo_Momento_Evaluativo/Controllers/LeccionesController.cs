@@ -17,7 +17,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             _context = context;
         }
 
-        // GET: Lecciones
         public async Task<IActionResult> Index(int? cursoId)
         {
             var query = _context.Lecciones.Include(l => l.Curso).AsQueryable();
@@ -31,7 +30,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return View(await query.OrderBy(l => l.Orden).ToListAsync());
         }
 
-        // GET: Lecciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

@@ -27,7 +27,6 @@ namespace Segundo_Momento_Evaluativo.Models
         [Display(Name = "Fecha de Creación")]
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
-        // Propiedad de navegación
         public virtual ICollection<LeccionCompletada> LeccionesCompletadas { get; set; } = new List<LeccionCompletada>();
     }
 }

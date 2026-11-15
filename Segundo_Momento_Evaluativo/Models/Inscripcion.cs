@@ -12,7 +12,6 @@ namespace Segundo_Momento_Evaluativo.Models
         public int CursoId { get; set; }
         public virtual Curso? Curso { get; set; }
 
-        // Vínculo con Identity (Paso 6 y 7 de la pizarra)
         [Display(Name = "Usuario")]
         public string? UsuarioId { get; set; }
         public virtual IdentityUser? Usuario { get; set; }

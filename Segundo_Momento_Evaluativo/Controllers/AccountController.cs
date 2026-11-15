@@ -21,7 +21,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             _roleManager = roleManager;
         }
 
-        // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
@@ -30,7 +29,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return View();
         }
 
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -61,7 +59,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return View(model);
         }
 
-        // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string? returnUrl = null)
@@ -70,7 +67,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return View();
         }
 
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -92,7 +88,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                // Asignar rol seleccionado (o Estudiante por defecto)
                 string rolAsignar = model.Rol == "Administrador" ? "Administrador" : "Estudiante";
                 if (!await _roleManager.RoleExistsAsync(rolAsignar))
                 {
@@ -100,7 +95,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
                 }
                 await _userManager.AddToRoleAsync(user, rolAsignar);
 
-                // Iniciar sesión automáticamente
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -118,7 +112,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return View(model);
         }
 
-        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -127,7 +120,6 @@ namespace Segundo_Momento_Evaluativo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Account/AccessDenied
         [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()
